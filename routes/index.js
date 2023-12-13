@@ -1,12 +1,14 @@
+
 const express = require('express');
 const router = express.Router();
 
-router.use("/posts", require("./posts"))
-router.use('/auth', require('./auth'));
+const postsRoutes = require("./posts");
 
-router.use((req, res, next) => {
-    // Lógica del middleware aquí
-    next();
-  });
+const isAuthenticated = require("../middleware/isAuthenticated");
+
+router.use("/posts", isAuthenticated, postsRoutes);
+
+const authRoutes = require("./auth");
+router.use("/auth", authRoutes);
 
 module.exports = router;
