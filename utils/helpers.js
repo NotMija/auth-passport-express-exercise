@@ -1,16 +1,12 @@
-const Handlebars = require("handlebars");
-
 module.exports = {
-  renderSkinsList: function (user, skins) {
-    let html = "<ul>";
-
-    skins.forEach((skin) => {
-      if (user.id === skin.userId) {
-        html += `<li>${skin.name} (${skin.userId})</li>`;
-      }
-    });
-
-    html += "</ul>";
-    return new Handlebars.SafeString(html);
+  capitalize: (text) => {
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  },
+  formatDate: (date) => {
+    return new Date(date).toLocaleDateString();
+  },
+  isAuthor: (user, post) => {
+    const isAuthor = user.id === post.authorId;
+    return isAuthor;
   },
 };

@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
@@ -6,39 +5,39 @@ const passport = require("passport");
 
 const prisma = require("../prisma");
 
-// Ruta de registro
-router.post("/register", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = await prisma.user.create({
       data: {
-        username: req.body.username,
+        userName: req.body.username,
         password: hashedPassword,
+        email: req.body.email,
       },
     });
-    res.redirect("/auth/login-page");
+    res.redirect("/auth/login");
   } catch (error) {
-    console.log(error);
-    res.redirect("/auth/register-page");
+    console.log(error)
+    res.redirect('/auth/signup');
   }
 });
 
-// Ruta de inicio de sesión
+
 router.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/auth/login-page",
+    failureRedirect: "/auth/login",
     failureFlash: true,
   })
 );
 
-router.get("/login-page", (req, res) => {
-  res.render("login");
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Login" });
 });
 
-router.get("/register-page", (req, res) => {
-  res.render("register");
+router.get("/signup", (req, res) => {
+  res.render("signup", { title: "Sign Up" });
 });
 
 router.get("/logout", (req, res) => {
@@ -46,7 +45,7 @@ router.get("/logout", (req, res) => {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
+    res.redirect("/login");
   });
 });
 
