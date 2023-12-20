@@ -1,6 +1,6 @@
 const prisma = require("./prisma");
 const express = require('express');
-const flash = require('express-flash');
+
 const app = express();
 const PORT = 3000;
 const morgan = require("morgan");
@@ -20,8 +20,7 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-// Configurar express-flash
-app.use(flash());
+
 
 app.use(morgan("dev"));
 app.use(express.json());
